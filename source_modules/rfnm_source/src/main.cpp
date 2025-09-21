@@ -33,13 +33,12 @@
 // enums, structs live across librfnm_api.h / rfnm_fw_api.h and are included by device.h
 
 SDRPP_MOD_INFO{
-    /* Name:            */ "rfnm_source",
-    /* Description:     */ "RFNM Source Module",
-    /* Author:          */ "Ryzerth",
-    /* Forked by: */ "chiaraberti13",
-    /* Version:         */ 0, 1, 0,
-    /* Max instances    */ -1
+    "rfnm_source",
+    "RFNM Source Module",
+    "Ryzerth",
+    0, 1, 0
 };
+
 
 #define CONCAT(a, b) ((std::string(a) + b).c_str())
 
