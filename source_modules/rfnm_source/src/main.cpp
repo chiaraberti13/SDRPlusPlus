@@ -32,6 +32,25 @@
 #include <librfnm/rx_stream.h>
 // enums, structs live across librfnm_api.h / rfnm_fw_api.h and are included by device.h
 
+// Helper: translate rfnm_api_failcode into human-readable string
+static const char* failcode_to_str(rfnm_api_failcode code) {
+    switch (code) {
+        case RFNM_API_OK: return "OK";
+        case RFNM_API_PROBE_FAIL: return "Probe failed";
+        case RFNM_API_TUNE_FAIL: return "Tune failed";
+        case RFNM_API_GAIN_FAIL: return "Gain setting failed";
+        case RFNM_API_TIMEOUT: return "Timeout";
+        case RFNM_API_USB_FAIL: return "USB communication failed";
+        case RFNM_API_DQBUF_OVERFLOW: return "DQ buffer overflow";
+        case RFNM_API_NOT_SUPPORTED: return "Operation not supported";
+        case RFNM_API_SW_UPGRADE_REQUIRED: return "Firmware upgrade required";
+        case RFNM_API_DQBUF_NO_DATA: return "No data in DQ buffer";
+        case RFNM_API_MIN_QBUF_CNT_NOT_SATIFIED: return "Minimum QBUF count not satisfied";
+        case RFNM_API_MIN_QBUF_QUEUE_FULL: return "QBUF queue full";
+        default: return "Unknown error";
+    }
+}
+
 SDRPP_MOD_INFO{
     "rfnm_source",
     "RFNM Source Module",
@@ -309,7 +328,7 @@ private:
         // Start streaming
         auto rc = _this->rx->start();
         if (rc != RFNM_API_OK) {
-            flog::error("RFNM: rx_stream start failed: {}", (int)rc);
+            flog::error("RFNM: rx_stream start failed: {} ({})", (int)rc, failcode_to_str(rc));
         }
 
         // Prepare local buffer for int16 I/Q (CS16). SDR++ expects CF32; we convert on the fly.
