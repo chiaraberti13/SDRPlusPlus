@@ -40,8 +40,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
   libiio-dev libad9361-dev \
   libsoapysdr-dev soapysdr-tools
 
----
-
 ## 🔌 Recommended USB-C Cable (for best performance)
 
 * **Standard:** USB 3.2 Gen 2x2
