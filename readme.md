@@ -39,3 +39,11 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
   libairspy-dev libairspyhf-dev librtlsdr-dev \
   libiio-dev libad9361-dev \
   libsoapysdr-dev soapysdr-tools
+
+## 🔌 Recommended USB-C Cable (for best performance)
+
+* **Standard:** USB 3.2 Gen 2x2
+* **Data Transfer Speed:** up to 20Gbps (backward compatible with USB 3.1/3.0/2.0)
+* **Video Output:** up to 8K\@30Hz, 5K\@60Hz, 4K\@144Hz
+* **Compatibility:** requires devices supporting USB 3.2 or higher (USB4 / Thunderbolt 3/4)
+* **Note:** video output requires USB-C ports with **DP Alt Mode** support
