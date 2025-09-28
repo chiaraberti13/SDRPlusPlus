@@ -110,7 +110,7 @@ private:
 
     // Convert enum path to a human label (use librfnm utility if available)
     static std::string pathToLabel(enum rfnm_rf_path p) {
-        // Prefer library’s stringify (present in your headers)
+        // Prefer library's stringify (present in your headers)
         return rfnm::device::rf_path_to_string(p);
     }
 
@@ -306,12 +306,12 @@ private:
         // Apply initial configuration using public setters (apply=true does an immediate commit)
         const int ch = _this->currentPath.chId;
 
-        // Enable channel and streaming state
-        _this->dev->set_rx_channel_active((uint32_t)ch, RFNM_CH_ON, RFNM_CH_STREAM_ON, true);
+        // Reset channel and streaming state (PATCH CORRECTION)
+        _this->dev->set_rx_channel_active((uint32_t)ch, RFNM_CH_OFF, RFNM_CH_STREAM_OFF, true);
 
-        // Sample-rate: translate to (m,n)
+        // Sample-rate: translate to (m,n) (PATCH CORRECTION)
         int16_t m = 1, n = 2;
-        srToDividers(_this->samplerates[_this->srId], m, n);
+        srToDividers(_this->samplerates.key(_this->srId), m, n);
         _this->dev->set_rx_channel_samp_freq_div((uint32_t)ch, m, n, true);
 
         // Frequency / gain / filters / path
@@ -320,6 +320,9 @@ private:
         _this->dev->set_rx_channel_rfic_lpf_bw((uint32_t)ch, 100, true);
         _this->dev->set_rx_channel_fm_notch((uint32_t)ch, _this->fmNotch ? RFNM_FM_NOTCH_ON : RFNM_FM_NOTCH_OFF, true);
         _this->dev->set_rx_channel_path((uint32_t)ch, _this->currentPath.path, true);
+
+        // Now enable channel and streaming state
+        _this->dev->set_rx_channel_active((uint32_t)ch, RFNM_CH_ON, RFNM_CH_STREAM_ON, true);
 
         // Create an RX stream on the selected channel (bitmask uses bit-per-channel)
         uint8_t ch_mask = (uint8_t)(1u << ch);
@@ -360,8 +363,7 @@ private:
             _this->rx.reset();
         }
         if (_this->dev) {
-            const int ch = _this->currentPath.chId;
-            _this->dev->set_rx_channel_active((uint32_t)ch, RFNM_CH_OFF, RFNM_CH_STREAM_OFF, true);
+            // PATCH CORRECTION: rimossa la chiamata set_rx_channel_active qui
             _this->dev.reset();
         }
 
@@ -428,12 +430,12 @@ private:
 
         if (_this->running) { SmGui::EndDisabled(); }
 
-        // Bandwidth (placeholder as in original)
+        // Bandwidth (PATCH CORRECTION: implementazione reale invece del TODO)
         SmGui::LeftLabel("Bandwidth");
         SmGui::FillWidth();
         if (SmGui::Combo(CONCAT("##_rfnm_bw_sel_", _this->name), &_this->bwId, _this->bandwidths.txt)) {
-            if (_this->running) {
-                // TODO: device-side BW call when available
+            if (_this->running && _this->dev) {
+                _this->dev->set_rx_channel_rfic_lpf_bw(_this->currentPath.chId, _this->bandwidths.key(_this->bwId), true);
             }
         }
 
@@ -480,14 +482,10 @@ private:
         // Temporary raw buffer: CS16 interleaved
         std::vector<int16_t> tmpIQ(elemsPerRead * 2); // I & Q per sample
 
-        // Pointers array for rx_stream::read (indexed by device channels)
-        // We’ll fill only the slot corresponding to 'ch'.
-        std::vector<void*> buffs;
-        buffs.resize( (size_t)std::max(ch + 1, 1), nullptr );
+        // PATCH CORRECTION: semplificazione del buffer array
+        std::vector<void*> buffs = {tmpIQ.data()};
 
         while (run) {
-            buffs[ch] = tmpIQ.data();
-
             size_t elems_read = 0;
             uint64_t ts_ns = 0;
             auto rc = rx->read((void* const*)buffs.data(), (size_t)elemsPerRead, elems_read, ts_ns, 20000);
@@ -500,9 +498,10 @@ private:
 
             // Convert CS16 -> CF32 into SDR++ write buffer
             // Each complex sample -> 2 floats (I, Q)
-            // We’ll reuse SDR++ ring policy: accumulate then swap.
+            // We'll reuse SDR++ ring policy: accumulate then swap.
             size_t sampCount = elems_read;
             // Ensure we have enough room; SDR++ stream will manage swap cadence
+            // CORREZIONE: manteniamo il fattore di conversione CORRETTO (1.0f / 32768.0f)
             volk_16i_s32f_convert_32f((float*)&stream.writeBuf[0], tmpIQ.data(), 1.0f / 32768.0f, sampCount * 2);
 
             if (!stream.swap((int)sampCount)) {
