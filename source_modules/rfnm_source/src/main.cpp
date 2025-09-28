@@ -306,9 +306,6 @@ private:
         // Apply initial configuration using public setters (apply=true does an immediate commit)
         const int ch = _this->currentPath.chId;
 
-        // Reset channel and streaming state (PATCH CORRECTION)
-        _this->dev->set_rx_channel_active((uint32_t)ch, RFNM_CH_OFF, RFNM_CH_STREAM_OFF, true);
-
         // Sample-rate: translate to (m,n) (PATCH CORRECTION)
         int16_t m = 1, n = 2;
         srToDividers(_this->samplerates.key(_this->srId), m, n);
@@ -320,9 +317,6 @@ private:
         _this->dev->set_rx_channel_rfic_lpf_bw((uint32_t)ch, 100, true);
         _this->dev->set_rx_channel_fm_notch((uint32_t)ch, _this->fmNotch ? RFNM_FM_NOTCH_ON : RFNM_FM_NOTCH_OFF, true);
         _this->dev->set_rx_channel_path((uint32_t)ch, _this->currentPath.path, true);
-
-        // Now enable channel and streaming state
-        _this->dev->set_rx_channel_active((uint32_t)ch, RFNM_CH_ON, RFNM_CH_STREAM_ON, true);
 
         // Create an RX stream on the selected channel (bitmask uses bit-per-channel)
         uint8_t ch_mask = (uint8_t)(1u << ch);
