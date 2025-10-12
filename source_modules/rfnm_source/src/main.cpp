@@ -495,8 +495,8 @@ private:
             // We'll reuse SDR++ ring policy: accumulate then swap.
             size_t sampCount = elems_read;
             // Ensure we have enough room; SDR++ stream will manage swap cadence
-            // CORREZIONE: manteniamo il fattore di conversione CORRETTO (1.0f / 32768.0f)
-            volk_16i_s32f_convert_32f((float*)&stream.writeBuf[0], tmpIQ.data(), 1.0f / 32768.0f, sampCount * 2);
+            // CORREZIONE: manteniamo il fattore di conversione CORRETTO (32768.0f)
+            volk_16i_s32f_convert_32f((float*)&stream.writeBuf[0], tmpIQ.data(), 32768.0f, sampCount * 2);
 
             if (!stream.swap((int)sampCount)) {
                 // Stop requested or downstream closed
