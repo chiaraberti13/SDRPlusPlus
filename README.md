@@ -1,36 +1,18 @@
-# 📡 SDR++, The bloat-free SDR software
+<p align="center"><img src="assets/banner.svg" alt="SDR++ RFNM Fork" width="100%"></p>
+
+<p align="center"><a href="README.md">🇬🇧 English</a> · <a href="README.it.md">🇮🇹 Italiano</a></p>
 
 <p align="center">
-  <a href="README.md">🇬🇧 English</a> | <a href="README-IT.md">🇮🇹 Italiano</a>
+  <img src="https://img.shields.io/badge/status-maintained%20fork-F2C94C?style=flat-square" alt="Maintained fork">
+  <img src="https://img.shields.io/badge/category-SDR%20%26%20RADIO-22D3EE?style=flat-square" alt="SDR and radio">
+  <img src="https://img.shields.io/badge/stack-C%2B%2B-8B949E?style=flat-square" alt="C++">
+  <img src="https://img.shields.io/badge/licence-GPL--3.0-2EA043?style=flat-square" alt="GPL 3.0">
 </p>
 
-<p align="center">
-  <img src="https://i.imgur.com/Ter2MQJ.png" alt="SDR++ Screenshot" width="800">
-</p>
+> [!IMPORTANT]
+> This repository is a fork of [AlexandreRouma/SDRPlusPlus](https://github.com/AlexandreRouma/SDRPlusPlus). It preserves the upstream project and licence while adding focused RFNM hardware-support changes used by [`Rfnm-sdrpp-setup`](https://github.com/chiaraberti13/Rfnm-sdrpp-setup).
 
-SDR++ is a cross-platform and open source SDR software with the aim of being bloat free
-and simple to use.
-
-<p align="center">
-  <img src="https://github.com/AlexandreRouma/SDRPlusPlus/workflows/Build%20Binaries/badge.svg" alt="Build">
-  <a href="https://github.com/chiaraberti13/SDRPlusPlus/stargazers"><img src="https://img.shields.io/github/stars/chiaraberti13/SDRPlusPlus?style=for-the-badge&color=blue" alt="GitHub stars"></a>
-  <a href="https://github.com/chiaraberti13/SDRPlusPlus/network/members"><img src="https://img.shields.io/github/forks/chiaraberti13/SDRPlusPlus?style=for-the-badge&color=blue" alt="GitHub forks"></a>
-  <a href="https://github.com/chiaraberti13/SDRPlusPlus/issues"><img src="https://img.shields.io/github/issues/chiaraberti13/SDRPlusPlus?style=for-the-badge&color=orange" alt="Open issues"></a>
-  <a href="license"><img src="https://img.shields.io/github/license/chiaraberti13/SDRPlusPlus?style=for-the-badge&color=green" alt="License"></a>
-</p>
-
-<p align="center">
-  <b>If you find this project useful, consider supporting it:</b><br><br>
-  <a href="https://patreon.com/ryzerth"><img src="https://img.shields.io/badge/Patreon-Support-F96854?style=for-the-badge&logo=patreon&logoColor=white" alt="Patreon"></a>
-</p>
-
-<p align="center">
-  <a href="https://patreon.com/ryzerth">Patreon</a> ·
-  <a href="https://discord.gg/aFgWjyD">Discord Server</a> ·
-  <a href="https://www.reddit.com/r/sdrpp/">Reddit</a>
-</p>
-
-> IRC: `#sdrpp` ([libera.chat](https://libera.chat)) — **no longer active, join Discord instead.**
+<p align="center"><a href="SECURITY.md">Security</a> · <a href="license">Upstream licence</a> · <a href="contributing.md">Contributing</a></p>
 
 ---
 
